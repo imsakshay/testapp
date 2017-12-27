@@ -6,7 +6,8 @@
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>User Registration</h4>
+    <h5>@Html.ActionLink("Login", "Login", "Login") | @Html.ActionLink("Register user", "AddOrEdit", "Login")</h5>
+    <h3>User Registration</h3>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @*<div class="form-group">

@@ -35,18 +35,44 @@ namespace testApp.Controllers
             return View("AddorEdit", new Login());
         }
 
+        [HttpGet]
+        public ActionResult login()
+        {
+            Login Log = new Login();
+            return View(Log);
+        }
 
+        [HttpPost]
         public ActionResult login(Login Log)
         {
             using (LoginEntities loginmodel = new LoginEntities())
             {
-                if (loginmodel.Logins.Any(x => x.UserName == Log.UserName) || loginmodel.Logins.Any(x => x.Password == Log.Password))
+                if (loginmodel.Logins.Any(x => x.UserName == Log.UserName) && loginmodel.Logins.Any(x => x.Password == Log.Password))
                 {
                     
                     return RedirectToAction("Index", "Home");
                 }
+
+                var d = loginmodel.Logins.Where(x => x.UserName == Log.UserName);//  .Any(x => x.UserName != Log.UserName);
+
+                
+                if (d.Count()==0)
+                {
+                    ViewBag.Dublicate = "Wrong Username";
+                    return View("login", Log);
+                }
+                //else if (loginmodel.Logins.Any(x => x.UserName != Log.UserName))
+                //{
+                //    ViewBag.Dublicate = "Wrong Username";
+                //    return View("login", Log);
+                //}
+                if (loginmodel.Logins.Any(x => x.Password != Log.Password))
+                {
+                    ViewBag.SuccessMessage = "Wrong Password";
+                    return View("login", Log);
+                }
                 else
-                    return View("login");
+                    return View("login",Log);
             }
         }
     }

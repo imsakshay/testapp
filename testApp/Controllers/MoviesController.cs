@@ -123,5 +123,42 @@ namespace testApp.Controllers
             }
             base.Dispose(disposing);
         }
+        public ActionResult WebGrid(int page =1 ,String sort = "FirstName" , string sortdir = "asc", string search= "")
+        {
+            int pageSize = 10;
+            int totalrecord = 0;
+            int skip = (page * pageSize) - pageSize;
+
+            var data = getmovies(search, sort, sortdir, skip, pageSize, out totalrecord);
+            
+            return View(data);
+        }
+
+        public List<Movy> getmovies(string search,string sort,string sortdir,int skip, int pagesize, out int totalrecord)
+        {
+            using(MoviesDbEntities db = new MoviesDbEntities())
+            {
+                var v = (from a in db.Movies
+
+                         where
+                               a.Title.Contains(search) ||
+                               a.Director.Contains(search) ||
+                               a.Genre.Contains(search) ||
+                               a.Price.Contains(search)
+                         select a
+                                );
+
+                totalrecord = v.Count();
+                //v = v.OrderBy(sort + " " + sortdir);
+                //if (pagesize > 0)
+                //{
+                //    v= v.Skip()
+                //}
+                return v.ToList();
+            }
+        }
+        {
+            
+        }
     }
 }
