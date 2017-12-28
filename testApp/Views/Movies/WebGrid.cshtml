@@ -1,2 +1,45 @@
 ﻿@model List<testApp.Models.Movy>
 
+@{ 
+    ViewBag.Title = "webGrid";
+    Layout = null;
+    var grid = new WebGrid(canPage: true, rowsPerPage: 10);
+    grid.Bind(source: Model, rowCount: ViewBag.TotalRows, autoSortAndPage: false);
+}
+
+<html>
+<head>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="container">
+        <h2>Employees list</h2>
+        <div><input type='text' name='search' /> </div>
+        <div><input type="button" value="search" onclick="location.href='@Url.Action("WebGrid", "Movies")'"/>  </div>
+        <div>
+            @grid.Table(
+            tableStyle: "table table-responsive table-bordered",
+            columns: grid.Columns(
+
+                 grid.Column(columnName: "Title", header: "Title"),
+                 grid.Column(columnName: "Director", header: "Director"),
+                 grid.Column(columnName: "Genre", header: "Genre"),
+                 grid.Column(columnName: "Price", header: "Price")
+                )
+               )
+            <div class="row">
+                <div class="col-sm-6">
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+
+
+</html>
